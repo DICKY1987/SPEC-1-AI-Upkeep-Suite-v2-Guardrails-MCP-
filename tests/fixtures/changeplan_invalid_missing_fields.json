@@ -1,0 +1,13 @@
+{
+  "summary": "",
+  "changes": [
+    {
+      "path": "scripts/validation/Test-ChangePlan.ps1",
+      "description": ""
+    }
+  ],
+  "validation": {
+    "format": true,
+    "lint": true
+  }
+}
