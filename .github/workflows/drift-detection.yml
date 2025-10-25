@@ -1,0 +1,14 @@
+name: Drift Detection
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect drift
+        run: pwsh ./scripts/audit/Invoke-DriftDetection.ps1

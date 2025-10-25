@@ -1,0 +1,7 @@
+rules:
+  - id: generic-dangerous-shell
+    patterns:
+      - pattern: os.system(...)
+    message: Avoid invoking shells directly.
+    languages: [python]
+    severity: WARNING

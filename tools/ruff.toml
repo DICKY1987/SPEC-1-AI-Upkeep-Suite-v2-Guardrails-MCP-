@@ -1,0 +1,10 @@
+line-length = 100
+src = ["mcp-servers/python"]
+
+[lint]
+select = ["E", "F", "I"]
+ignore = []
+
+[format]
+quote-style = "double"
+indent-style = "space"
