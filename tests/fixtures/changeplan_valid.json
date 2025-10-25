@@ -1,0 +1,20 @@
+{
+  "summary": "Ensure SafePatch pipeline enforces validation",
+  "changes": [
+    {
+      "path": "scripts/validation/Test-ChangePlan.ps1",
+      "description": "Invoke Python validator from PowerShell",
+      "tests": [
+        "pytest",
+        "pester"
+      ]
+    }
+  ],
+  "validation": {
+    "format": true,
+    "lint": true,
+    "test": true,
+    "sast": true,
+    "policy": true
+  }
+}

@@ -1,0 +1,34 @@
+name: TypeScript Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  typescript-quality:
+    name: Run TypeScript quality gates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node.js tooling
+        run: |
+          npm install --no-save typescript@5.4.5 eslint@8.57.0 \
+            @typescript-eslint/parser@6.21.0 @typescript-eslint/eslint-plugin@6.21.0 prettier@3.2.5
+
+      - name: Run ESLint checks
+        run: |
+          npx eslint . \
+            --config tools/.eslintrc.json \
+            --ext .ts,.tsx,.js,.jsx
+
+      - name: Run TypeScript compiler checks
+        run: |
+          npx tsc --noEmit -p tools/tsconfig.json

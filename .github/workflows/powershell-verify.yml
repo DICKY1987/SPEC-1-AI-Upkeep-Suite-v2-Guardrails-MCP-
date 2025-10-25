@@ -1,0 +1,40 @@
+name: PowerShell Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  powershell-quality:
+    name: Run PowerShell quality gates
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install required PowerShell modules
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          Install-Module Pester -Scope CurrentUser -Force
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Invoke-ScriptAnalyzer \
+            -Path scripts,tools,tests \
+            -Recurse \
+            -Settings "$(Resolve-Path ./tools/PSScriptAnalyzerSettings.psd1)" \
+            -EnableExit
+
+      - name: Execute PowerShell verification pipeline
+        shell: pwsh
+        run: |
+          ./tools/Verify.ps1
+
+      - name: Execute integration tests
+        shell: pwsh
+        run: |
+          ./tests/Invoke-IntegrationTests.ps1 -Verbose
