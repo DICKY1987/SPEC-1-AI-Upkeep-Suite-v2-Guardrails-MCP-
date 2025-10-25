@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChangePlan",
+  "type": "object",
+  "required": ["summary", "changes", "validation"],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "description"],
+        "properties": {
+          "path": { "type": "string" },
+          "description": { "type": "string" },
+          "tests": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["format", "lint", "test"],
+      "properties": {
+        "format": { "type": "boolean" },
+        "lint": { "type": "boolean" },
+        "test": { "type": "boolean" },
+        "sast": { "type": "boolean" },
+        "policy": { "type": "boolean" }
+      }
+    }
+  }
+}

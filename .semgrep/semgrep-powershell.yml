@@ -1,0 +1,6 @@
+rules:
+  - id: powershell-avoid-write-host
+    pattern: Write-Host ...
+    message: Use Write-Output instead of Write-Host.
+    languages: [powershell]
+    severity: WARNING

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "servers": [
+    {
+      "name": "powershell-quality",
+      "description": "PowerShell quality tooling (PSSA, Pester)",
+      "entryPoint": "mcp-servers/powershell/ps_quality_mcp.ps1",
+      "tools": ["psscriptanalyzer", "pester"],
+      "platform": "powershell"
+    },
+    {
+      "name": "python-quality",
+      "description": "Python formatting, linting, and tests",
+      "entryPoint": "mcp-servers/python/quality_mcp.py",
+      "tools": ["ruff", "black", "mypy", "pytest"],
+      "platform": "python"
+    },
+    {
+      "name": "semgrep-sast",
+      "description": "Semgrep security scanning",
+      "entryPoint": "mcp-servers/sast/semgrep_mcp.py",
+      "tools": ["semgrep"],
+      "platform": "python"
+    },
+    {
+      "name": "secrets-scan",
+      "description": "Secret detection via gitleaks",
+      "entryPoint": "mcp-servers/secrets/secrets_mcp.py",
+      "tools": ["gitleaks"],
+      "platform": "python"
+    },
+    {
+      "name": "policy-validation",
+      "description": "OPA/Conftest policy validation",
+      "entryPoint": "mcp-servers/policy/policy_mcp.py",
+      "tools": ["conftest"],
+      "platform": "powershell"
+    }
+  ]
+}

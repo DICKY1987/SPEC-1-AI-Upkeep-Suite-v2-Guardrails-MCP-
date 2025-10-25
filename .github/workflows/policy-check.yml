@@ -1,0 +1,15 @@
+name: Policy Validation
+
+on:
+  pull_request:
+    paths:
+      - 'policy/**'
+      - 'docs/**'
+
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run policy checks
+        run: echo "OPA/Conftest placeholder"

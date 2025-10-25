@@ -1,0 +1,38 @@
+{
+  "groups": [
+    {
+      "name": "reader",
+      "description": "Read-only access for observation and audit",
+      "tools": []
+    },
+    {
+      "name": "contributor",
+      "description": "Standard contributors with access to validation tools",
+      "tools": [
+        "psscriptanalyzer",
+        "pester",
+        "ruff",
+        "black",
+        "mypy",
+        "pytest",
+        "semgrep",
+        "gitleaks"
+      ]
+    },
+    {
+      "name": "maintainer",
+      "description": "Maintainers with policy overrides and drift detection",
+      "tools": [
+        "psscriptanalyzer",
+        "pester",
+        "ruff",
+        "black",
+        "mypy",
+        "pytest",
+        "semgrep",
+        "gitleaks",
+        "conftest"
+      ]
+    }
+  ]
+}
