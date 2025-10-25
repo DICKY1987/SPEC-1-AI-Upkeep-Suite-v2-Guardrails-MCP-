@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+      - id: ruff-format
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+  - repo: local
+    hooks:
+      - id: powershell-verify
+        name: PowerShell Verify (PSSA + Pester)
+        entry: pwsh -NoLogo -NoProfile -File tools/Verify.ps1
+        language: system
+        pass_filenames: false
+      - id: semgrep
+        name: Semgrep SAST
+        entry: semgrep -q --config .semgrep/semgrep.yml
+        language: system
+        pass_filenames: false
