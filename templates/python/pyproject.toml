@@ -1,0 +1,42 @@
+[project]
+name = "aiuokeep-template"
+version = "0.1.0"
+description = "Starter Python package adhering to AIUOKEEP guardrails"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Contoso Automation Team", email = "devops@example.com" },
+]
+license = { text = "Proprietary" }
+keywords = ["ai", "automation", "guardrails"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: Other/Proprietary License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+aiuokeep-template = "python_cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["aiuokeep_template*"]
+
+[tool.ruff]
+select = ["E", "F", "I", "N", "UP", "B", "A", "PL"]
+line-length = 100
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+ignore_missing_imports = false
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --disable-warnings"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
