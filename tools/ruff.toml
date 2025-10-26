@@ -1,10 +1,37 @@
 line-length = 100
-src = ["mcp-servers/python"]
+target-version = "py312"
+
+src = [
+    "mcp-servers/python",
+    "scripts",
+    "tests"
+]
 
 [lint]
-select = ["E", "F", "I"]
+select = [
+    "E",  # pycodestyle
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "UP", # pyupgrade
+    "S",  # flake8-bandit
+    "C4"  # flake8-comprehensions
+]
 ignore = []
+
+per-file-ignores = {
+    "tests/**/*.py" = ["S101"]
+}
+
+[lint.isort]
+force-single-line = false
+lines-after-imports = 2
+known-first-party = ["mcp_servers"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
 [format]
 quote-style = "double"
 indent-style = "space"
+line-ending = "lf"
+docstring-code-format = true
+skip-magic-trailing-comma = false
