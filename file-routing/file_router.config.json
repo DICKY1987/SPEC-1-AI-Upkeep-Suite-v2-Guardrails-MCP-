@@ -1,8 +1,93 @@
 {
-  "routes": [
+  "schemaVersion": "1.0.0",
+  "description": "File routing configuration for the SPEC-1 AI Upkeep Suite v2 repository.",
+  "watchers": [
     {
-      "pattern": "SPEC-1/**",
-      "destination": "./"
+      "name": "Downloads",
+      "path": "%USERPROFILE%/Downloads",
+      "filter": "*.*",
+      "includeSubdirectories": false,
+      "processExistingOnStart": true
     }
-  ]
+  ],
+  "fileNameContract": {
+    "pattern": "^(?<project>[A-Z0-9-]+)-(?<area>[A-Z0-9]+)-(?<subfolder>[A-Z0-9]+)__(?<name>[a-z0-9-]+)__(?<timestamp>\\d{8}T\\d{6}Z)__(?<version>v\\d+\\.\\d+\\.\\d+|r\\d{2})__(?<ulid>[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26})__(?<sha8>[a-f0-9]{8})(?<extension>\\.[A-Za-z0-9._-]+)$",
+    "timestampFormat": "yyyyMMddTHHmmssZ",
+    "ulidLength": 26,
+    "checksumLength": 8
+  },
+  "filters": {
+    "allowedExtensions": [
+      ".md",
+      ".ps1",
+      ".psd1",
+      ".psm1",
+      ".json",
+      ".rego",
+      ".sql",
+      ".sh",
+      ".py",
+      ".toml",
+      ".ts",
+      ".tsx",
+      ".ini",
+      ".yml",
+      ".yaml"
+    ]
+  },
+  "routing": [
+    {
+      "project": "SPEC-1",
+      "root": "./",
+      "routes": [
+        { "area": "DOC", "subfolder": "GUIDE", "destination": "docs/guides" },
+        { "area": "DOC", "subfolder": "SPEC", "destination": "docs/specs" },
+        { "area": "DOC", "subfolder": "OPS", "destination": "docs/operations" },
+        { "area": "POL", "subfolder": "SCHEMA", "destination": "policy/schemas" },
+        { "area": "POL", "subfolder": "OPA", "destination": "policy/opa" },
+        { "area": "POL", "subfolder": "CHANGE", "destination": "policy/change-management" },
+        { "area": "OPS", "subfolder": "VALIDATION", "destination": "scripts/validation" },
+        { "area": "OPS", "subfolder": "SANDBOX", "destination": "scripts/sandbox" },
+        { "area": "OPS", "subfolder": "HOOKS", "destination": "scripts/hooks" },
+        { "area": "OPS", "subfolder": "AUDIT", "destination": "scripts/audit" },
+        { "area": "OPS", "subfolder": "TOOLS", "destination": "tools" },
+        { "area": "TOOLS", "subfolder": "ROOT", "destination": "tools" },
+        { "area": "DEV", "subfolder": "PYMOD", "destination": "templates/python" },
+        { "area": "DEV", "subfolder": "PSMOD", "destination": "templates/powershell" },
+        { "area": "DEV", "subfolder": "TSMOD", "destination": "templates/typescript" },
+        { "area": "MCP", "subfolder": "CONFIG", "destination": ".mcp" },
+        { "area": "MCP", "subfolder": "SERVERPS", "destination": "mcp-servers/powershell" },
+        { "area": "MCP", "subfolder": "SERVERPY", "destination": "mcp-servers/python" },
+        { "area": "MCP", "subfolder": "SERVERPOL", "destination": "mcp-servers/policy" },
+        { "area": "MCP", "subfolder": "SERVERSEC", "destination": "mcp-servers/secrets" },
+        { "area": "MCP", "subfolder": "SERVERSAST", "destination": "mcp-servers/sast" },
+        { "area": "DB", "subfolder": "SQL", "destination": "database" },
+        { "area": "DB", "subfolder": "MIGRATION", "destination": "database/migrations" },
+        { "area": "SCHEMA", "subfolder": "ROOT", "destination": "schemas" },
+        { "area": "TEST", "subfolder": "ROOT", "destination": "tests" },
+        { "area": "FILE", "subfolder": "ROUTER", "destination": "file-routing" }
+      ],
+      "defaults": {
+        "area": "DOC",
+        "destination": "docs"
+      }
+    }
+  ],
+  "defaults": {
+    "quarantineDirectory": "./file-routing/quarantine",
+    "duplicatesDirectory": "./file-routing/duplicates",
+    "stagingDirectory": "./file-routing/staging",
+    "unknownProjectAction": "quarantine",
+    "unknownRouteAction": "quarantine"
+  },
+  "logging": {
+    "ledgerPath": "./file-routing/logs/file-router-ledger.jsonl",
+    "maxLedgerSizeMB": 25,
+    "rolloverHint": "Compress or archive the ledger when it exceeds maxLedgerSizeMB."
+  },
+  "duplicatePolicy": {
+    "mode": "suffix",
+    "suffixFormat": "--dup{0}",
+    "maxSuffixAttempts": 20
+  }
 }
