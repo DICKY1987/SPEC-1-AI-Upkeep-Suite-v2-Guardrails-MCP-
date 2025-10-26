@@ -1,6 +1,32 @@
+# PowerShell specific Semgrep rules used in the guardrail pipeline.
+
 rules:
-  - id: powershell-avoid-write-host
-    pattern: Write-Host ...
-    message: Use Write-Output instead of Write-Host.
-    languages: [powershell]
+  - id: powershell-no-write-host
+    message: "Use Write-Output or structured logging instead of Write-Host."
     severity: WARNING
+    languages: [powershell]
+    pattern: Write-Host ...
+
+  - id: powershell-no-invoke-expression
+    message: "Invoke-Expression bypasses guardrails and is not allowed."
+    severity: ERROR
+    languages: [powershell]
+    pattern: Invoke-Expression ...
+
+  - id: powershell-require-strictmode
+    message: "Scripts must enable Set-StrictMode -Version Latest."
+    severity: ERROR
+    languages: [powershell]
+    patterns:
+      - pattern-not: |
+          Set-StrictMode -Version Latest
+      - pattern-either:
+          - pattern: |
+              function $FUNC(...) {
+                  ...
+              }
+          - pattern: |
+              [CmdletBinding()]
+              param(...)
+              ...
+
