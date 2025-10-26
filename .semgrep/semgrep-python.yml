@@ -1,6 +1,36 @@
+# Python specific Semgrep rules for the AI guardrail pipeline.
+
 rules:
   - id: python-no-eval
-    pattern: eval(...)
-    message: Avoid eval() for security reasons.
-    languages: [python]
+    message: "Avoid eval(); it allows arbitrary code execution."
     severity: ERROR
+    languages: [python]
+    pattern: eval(...)
+
+  - id: python-no-exec
+    message: "Avoid exec(); it allows arbitrary code execution."
+    severity: ERROR
+    languages: [python]
+    pattern: exec(...)
+
+  - id: python-shell-true
+    message: "Do not run subprocesses with shell=True; use explicit argument lists."
+    severity: ERROR
+    languages: [python]
+    patterns:
+      - pattern: subprocess.$FUNC(...)
+      - metavariable-regex:
+          metavariable: "$FUNC"
+          regex: "(run|call|check_call|check_output|Popen)"
+      - pattern-inside: |
+          subprocess.$FUNC(..., shell=True, ...)
+
+  - id: python-open-no-encoding
+    message: "Specify encoding when opening text files for deterministic results."
+    severity: WARNING
+    languages: [python]
+    patterns:
+      - pattern: open($FILENAME)
+      - pattern-not: open($FILENAME, encoding=...)
+      - pattern-not: open($FILENAME, $MODE, encoding=...)
+

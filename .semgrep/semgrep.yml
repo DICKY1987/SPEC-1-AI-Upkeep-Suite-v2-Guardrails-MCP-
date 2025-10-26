@@ -1,7 +1,39 @@
+# Base Semgrep configuration for repository-wide security and quality rules.
+# Language specific rules live in sibling configuration files within this
+# directory. The rules below capture cross-language issues.
+
 rules:
-  - id: generic-dangerous-shell
-    patterns:
-      - pattern: os.system(...)
-    message: Avoid invoking shells directly.
-    languages: [python]
+  - id: audit-todo-comments
+    message: "Resolve TODO/FIXME comments before delivering production changes."
+    languages: [python, typescript, javascript, powershell]
+    severity: INFO
+    pattern-regex: "(?i)\\b(TODO|FIXME)\\b"
+
+  - id: disallow-http-urls
+    message: "Use HTTPS endpoints. Plain HTTP is not permitted in production."
+    severity: ERROR
+    languages: [python, typescript, javascript]
+    pattern-regex: "http://"
+
+  - id: log-structured-errors
+    message: "Log messages must include structured context instead of bare string concatenation."
     severity: WARNING
+    languages: [python]
+    patterns:
+      - pattern: "logging.$LEVEL(... + ...)"
+      - metavariable-regex:
+          metavariable: "$LEVEL"
+          regex: "(debug|info|warning|error|critical)"
+
+  - id: guardrails-shell-outside-sandbox
+    message: "Shell commands must go through sandbox utilities; direct invocations are blocked."
+    severity: ERROR
+    languages: [python]
+    patterns:
+      - pattern: subprocess.$FUNC(...)
+      - metavariable-regex:
+          metavariable: "$FUNC"
+          regex: "(Popen|call|run|check_call|check_output)"
+      - pattern-inside: |
+          subprocess.$FUNC(..., shell=True, ...)
+
